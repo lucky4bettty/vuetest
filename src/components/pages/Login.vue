@@ -40,7 +40,7 @@ export default {
         console.log(response.data)
         // 登入成功後 將路徑轉到首頁
         if(response.data.success){
-            vm.$router.push('/')
+            vm.$router.push('/admin/product')
         }
         }) 
       },

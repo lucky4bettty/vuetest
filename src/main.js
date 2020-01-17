@@ -3,8 +3,10 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import 'bootstrap'
 import App from './App'
 import router from './router'
+
 
 Vue.config.productionTip = false
 
@@ -24,15 +26,17 @@ router.beforeEach((to, from, next) => {
   console.log('to',to,'from',from,'next',next)
 
   if(to.meta.requiresAuth){
-    // const api =`${process.env.APIPATH}/api/user/check`;
+    const api =`${process.env.APIPATH}/api/user/check`;
     // console.log(api)
-    // axios.get(api).then((response) => {
-    // console.log(response.data)
-    // })
-
-    // console.log('需驗證')
-  }else{
+    axios.post(api).then((response) => {
+    console.log(response.data)
+    })
     next();
+    console.log('需驗證')
+  }else{
+    next({
+      path:'/login',
+    });
   }
   
   // meta: { requiresAuth: true }
