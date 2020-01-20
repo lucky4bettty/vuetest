@@ -1,5 +1,6 @@
 <template>
     <div>
+      <loading :active.sync="isLoading" ></loading>
         <div class="text-right">
             <button class="btn btn-primary" @click="openModal(true)">建立新產品</button>
         </div>
@@ -16,8 +17,8 @@
                 <tr v-for="(item , key) in products" :key="item.id">
                     <td>{{item.category}} </td>
                     <td>{{item.title}}</td>
-                    <td class="text-right">{{item.origin_price}}</td>
-                    <td class="text-right">{{item.price}}</td>
+                    <td class="text-right">{{item.origin_price | currency}}</td>
+                    <td class="text-right">{{item.price | currency}}</td>
                     <td>
                         <span v-if="item.is_enabled" class="text-success">啟用</span>
                         <span v-else>未啟用</span>
@@ -30,6 +31,27 @@
             </tbody>
 
         </table>
+<!-- 分頁 -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item" :class="{'disabled' : !pagination.has_pre}">
+                <a class="page-link" href="#" aria-label="Previous" 
+                @click.prevent="getProducts(pagination.current_page -1)">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item" v-for=" page in pagination.total_pages " :key="page" 
+              :class="{'active':pagination.current_page == page }">
+                <a class="page-link" href="#" @click.prevent="getProducts(page)">{{page}}</a>
+              </li>
+              <li class="page-item" :class="{'disabled' : !pagination.has_next}">
+                <a class="page-link" href="#" aria-label="Next"
+                @click.prevent="getProducts(pagination.current_page +1)">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+        </nav>
         <!-- modal -->
         <!-- <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -74,7 +96,8 @@
             </div>
             <div class="form-group">
               <label for="customFile">或 上傳圖片
-                <i class="fas fa-spinner fa-spin"></i>
+                <i class="fas fa-spinner fa-spin" v-if="status.fileUploading"></i>
+                <!-- <i class="fas fa-spinner fa-spin"></i> -->
               </label>
               <input type="file" id="customFile" class="form-control"
                 ref="files" @change="uploadfile">
@@ -163,9 +186,8 @@
         是否刪除 <strong class="text-danger">{{ tempProduct.title }}</strong> 商品(刪除後將無法恢復)。
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-danger"
-          >確認刪除</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" >取消</button>
+        <button type="button" class="btn btn-danger" >確認刪除</button>
       </div>
     </div>
   </div>
@@ -181,18 +203,26 @@ export default {
     data(){
         return{
             products:[],
+            pagination:{},
             tempProduct:{},
             isNew: false ,
+            isLoading:false,
+            status:{
+              fileUploading:false,
+            },
         }
     },
     methods:{
-        getProducts(){
-            const api =`${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products`;
+        getProducts(page = 1){
+            const api =`${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products?page=${page}`;
                 console.log(api)
+                this.isLoading = true
                 // const api = 'https://vue-course-api.hexschool.io/api/lucky4betty/products'
                 this.$http.get(api).then((response) => {
+                this.isLoading = false  
                 this.products = response.data.products
-                console.log(this.products)
+                this.pagination = response.data.pagination
+                console.log(response.data)
             })
         },
         deleteProduct(item){
@@ -250,24 +280,29 @@ export default {
             const formData = new FormData();
             formData.append('file-to-upload' ,uploadFile )
             const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/upload`
+            this.status.fileUploading = true ;
             this.$http.post(url,formData,{
                 headers:{
                     'Content-Type':'multipart/form-data'
                 }
             }).then((response)=>{
                 console.log(response.data);
+                this.status.fileUploading = false
                 if(response.data.success){
                     // this.tempProduct.imageUrl = response.data.imageUrl
                     console.log(response.data.imageUrl)
                     console.log(this.tempProduct)
                     // this.$set(this.tempProduct , 'imageUrl' ,response.data.imageUrl )
+                    // 雙向綁定功能
                     this.$set(this.tempProduct, 'imageUrl', response.data.imageUrl)
+                }else{
+                  this.$bus.$emit('message:push' , response.data.message , 'danger');
                 }
             })
         }
     },
     created(){
-        this.getProducts()
+        this.getProducts() 
     }
 };
 </script>
