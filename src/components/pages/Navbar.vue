@@ -5,9 +5,31 @@
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Sign out</a>
+            <a class="nav-link" href="#" @click.prevent="signout" >登出</a>
             </li>
         </ul>
         </nav>
     </div>
 </template>
+
+<script>
+export default {
+    methods:{
+    signout(){
+      const api =`${process.env.APIPATH}/logout`;
+        const vm = this;
+        console.log(api)
+            // const api = 'https://vue-course-api.hexschool.io/api/lucky4betty/products'
+        this.$http.post(api).then((response) => {
+        console.log(response.data)
+
+        // 登入成功後 將路徑轉到首頁
+        if(response.data.success){
+            console.log('我已經登出')
+            // vm.$router.push('/login')
+        }
+        }) 
+    }
+  }
+}
+</script>

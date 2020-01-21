@@ -202,6 +202,7 @@ import $ from 'jquery'
 export default {
     data(){
         return{
+            // productActive:true,
             products:[],
             pagination:{},
             tempProduct:{},
@@ -302,7 +303,10 @@ export default {
         }
     },
     created(){
-        this.getProducts() 
+        this.getProducts() ;
+        // console.log('路由')
+
+        
     }
 };
 </script>

@@ -21,7 +21,6 @@ import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 import Alert from './AlertMessage'
 
-
 export default {
     components:{
         Sidebar,

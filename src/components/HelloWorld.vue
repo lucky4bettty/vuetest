@@ -19,11 +19,14 @@ export default {
         console.log(api)
             // const api = 'https://vue-course-api.hexschool.io/api/lucky4betty/products'
         this.$http.post(api).then((response) => {
-        console.log(response.data)
+        console.log(response)
         // 登入成功後 將路徑轉到首頁
+
         if(response.data.success){
-            vm.$router.push('/login')
+            // vm.$router.push('/login')
+            // this.$router.push('login')
         }
+
         }) 
     }
   }
