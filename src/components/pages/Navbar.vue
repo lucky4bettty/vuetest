@@ -22,11 +22,35 @@ export default {
             // const api = 'https://vue-course-api.hexschool.io/api/lucky4betty/products'
         this.$http.post(api).then((response) => {
         console.log(response.data)
-
-        // 登入成功後 將路徑轉到首頁
+// -------------------------------------------------------
+        //1. vue router -> 跳轉失敗 
+         vm.$router.push('/login')
+// -------------------------------------------------------
+        //2. promise 物件 ->開新分頁，再關掉舊分頁 
         if(response.data.success){
             console.log('我已經登出')
-            // vm.$router.push('/login')
+            var url = 'http://localhost:8080/#/login'
+            const openpage = new Promise((resolve, reject) => {
+                window.open(url, "_target");
+            });
+            const closepage = new Promise((resolve, reject) => {
+                window.close()
+            });
+            Promise.all( [openpage, closepage ] )
+// -------------------------------------------------------
+        //    window.open(url, "_target");
+        //    window.close()  
+
+        // 
+        // var RunCallbackFunction = function() { window.close()};
+        // //random function you want to call
+        //     function myFunc() { window.close() }
+
+        //     //to actually open the window..
+        //     var win = window.open("http://localhost:8080/#/login");
+        //     win.onload = function() { win.RunCallbackFunction = myFunc; };
+
+
         }
         }) 
     }
