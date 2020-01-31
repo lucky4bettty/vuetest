@@ -53,13 +53,26 @@ export default new Router({
           name: 'Coupon',
           component: Coupon,
           meta: { requiresAuth: true },
-        },
-        {
-          path:'customer',
-          name: 'Customer',
-          component: Customer,
-        },
+        }
+        // {
+        //   path:'customer',
+        //   name: 'Customer',
+        //   component: Customer,
+        //   meta: { requiresAuth: true },
+        // },
       ],
+    }, 
+       {
+      path:'/',
+      name: 'Dashboard',
+      component: Dashboard,
+      children:[
+       { 
+        path:'customer',
+        name: Customer,
+        component: Customer
+      }
+      ]
     },
   ]
 })

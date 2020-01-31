@@ -38,7 +38,7 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item" @click="linkStyle()">
-            <router-link  to='/admin/customer' class="nav-link" :class="{'active':  urlnow == pagenow[3]}" href="#">
+            <router-link  to='/customer' class="nav-link" :class="{'active':  urlnow == pagenow[3]}" href="#">
               <span data-feather="file-text"></span>
               模擬訂單
             </router-link>

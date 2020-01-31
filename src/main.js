@@ -32,19 +32,28 @@ new Vue({
 
 router.beforeEach((to, from, next) => {
   console.log('to',to,'from',from,'next',next)
-
+  
+// 判斷是否需要驗證
   if(to.meta.requiresAuth){
     const api =`${process.env.APIPATH}/api/user/check`;
     // console.log(api)
     axios.post(api).then((response) => {
-    console.log(response.data)
+      console.log(response.data)
+      // 連至用戶狀態之API
+      // 若為登入則跳轉至下一個指定頁面，指定頁面寫在 Login.vue 上
+      if(response.data.success){
+        next();
+      }else{
+      // 若狀態為登出集跳轉至login頁面
+        next({
+          path:'/login',
+        });
+      }
     })
-    next();
+    
     console.log('需驗證')
   }else{
-    next({
-      path:'/login',
-    });
+    next();
   }
   
   // meta: { requiresAuth: true }
