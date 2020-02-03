@@ -9,20 +9,20 @@
           </a>
         </h6>
         <ul class="nav flex-column">
-          <li class="nav-item" @click="linkStyle()">
-            <router-link to='/admin/product' class="nav-link" :class="{'active':  urlnow !== pagenow[1] && urlnow !== pagenow[2] && urlnow !== pagenow[3]}"  href="#">
+          <li class="nav-item" @click="linkStyle('product')">
+            <router-link to='/admin/product' class="nav-link" :class="{'active':  urlnow == pagenow[0] }"  href="#">
               <span data-feather="home"></span>
               產品列表 
               <!-- <span class="sr-only">(current)</span> -->
             </router-link>
           </li>
-          <li class="nav-item" @click="linkStyle()">
+          <li class="nav-item" @click="linkStyle('orderform')">
             <router-link to='/admin/orderform' class="nav-link" :class="{'active':  urlnow == pagenow[1]}" href="#">
               <span data-feather="file"></span>
               訂單列表
             </router-link>
           </li>
-          <li class="nav-item"  @click="linkStyle()">
+          <li class="nav-item"  @click="linkStyle('coupon')">
             <router-link to='/admin/coupon' class="nav-link" :class="{'active':  urlnow == pagenow[2]}" href="#">
               <span data-feather="shopping-cart"></span>
               優惠卷
@@ -37,8 +37,8 @@
           </a>
         </h6>
         <ul class="nav flex-column mb-2">
-          <li class="nav-item" @click="linkStyle()">
-            <router-link  to='/customer' class="nav-link" :class="{'active':  urlnow == pagenow[3]}" href="#">
+          <li class="nav-item" @click="linkStyle('customer')">
+            <router-link  to='/customer' class="nav-link" :class="{'active':  urlnow !== pagenow[1] && urlnow !== pagenow[2] && urlnow !== pagenow[0]}" href="#">
               <span data-feather="file-text"></span>
               模擬訂單
             </router-link>
@@ -61,9 +61,12 @@ data(){
     },
       methods:{
         linkStyle(e){
-          let url = this.$route.path
-          url = url.split('/')[2]
-          this.urlnow = url;
+          // let url = this.$route.path
+          // console.log(url)
+          console.log(e)
+          // url = url.split('/')[2]
+          this.urlnow = e;
+          console.log(this.urlnow)
         },
       },
 }
