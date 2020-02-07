@@ -19,9 +19,10 @@
                     <!-- <td>{{item.category}} </td> -->
                     <td>{{item.create_at}}</td>
                     <td>{{item.user.email}}</td>
-                    <td>{{}}</td>
+                    <!-- 要使html標籤有效 一定要使用 v-html -->
+                    <td v-html="$options.filters.productItem(item.products)"></td>
                     <td>{{item.total}}</td>
-                    <td>{{item.is_paid}}</td>
+                    <td v-bind:class="{ 'text-success': item.is_paid }" >{{item.is_paid | isPay}}</td>
                     <td>
                         <!-- <button class="btn btn-outline-primary btn-sm" @click="openModal(false,item)">編輯</button> -->
                         <button class="btn btn-outline-primary btn-sm" @click="deleteProduct(item)">刪除</button>
@@ -153,6 +154,10 @@ export default {
             },
         }
     },
+    created(){
+        this.getProducts() ;
+        // console.log('路由')  
+    },
     methods:{
         // 列表
         getProducts(page = 1){
@@ -164,10 +169,10 @@ export default {
                 this.isLoading = false  
                 this.products = response.data.orders
                 this.pagination = response.data.pagination
-                // console.log(response)
-                console.log(response.data)
-                // console.log(response.data.coupons)
-                // console.log(response.data.pagination)
+                
+                var productsKey = Object.keys(response.data.orders[0].products)
+                // console.log(response.data.orders[0].products[productsKey].id)
+
             })
         },
         // 刪除
@@ -269,9 +274,36 @@ export default {
             })
         }
     },
-    created(){
-        this.getProducts() ;
-        // console.log('路由')  
-    }
+    filters:{
+        isPay: function (e){
+            // console.log(e)
+            var pay = ''
+            if(e){
+            pay = "已付款"
+            }else{
+            pay = "未付款"
+            }
+            return pay
+        },
+        productItem:function(e){
+            console.log(e)
+            var productName =Object.keys(e)
+            // console.log(productName)
+            // console.log(productName.length)
+            var final = "";
+            var name ="";
+            var qty = 0 ;
+
+            for(var i=0 ; i<productName.length ; i++ ){
+                qty = e[productName[i]].qty
+                name = e[productName[i]].product.title
+                var word = name + '*' + qty +"<br/>"
+                final = final + word
+            }
+            console.log(final)
+            return final
+        }
+    },
+
 };
 </script>

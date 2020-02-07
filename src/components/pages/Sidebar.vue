@@ -56,17 +56,22 @@ data(){
         return{
             // productActive:true,
             pagenow:['product' ,'orderform' ,'coupon' ,'customer'],
+            url:'',
             urlnow:"",
         }
     },
+    created(){
+      // this.linkStyle()
+    },
       methods:{
-        linkStyle(e){
-          // let url = this.$route.path
-          // console.log(url)
-          console.log(e)
+        linkStyle(){
+          this.url = this.$route.path
+          console.log(this.$route)
+          console.log(this.url)
+          // console.log(e)
           // url = url.split('/')[2]
-          this.urlnow = e;
-          console.log(this.urlnow)
+          // this.urlnow = e;
+          // console.log(this.urlnow)
         },
       },
 }

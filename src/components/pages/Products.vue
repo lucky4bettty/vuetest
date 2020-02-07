@@ -17,6 +17,7 @@
                 <tr v-for="(item , key) in products" :key="item.id">
                     <td>{{item.category}} </td>
                     <td>{{item.title}}</td>
+                    <!-- currency 涵式 -> 於全域啟用 -->
                     <td class="text-right">{{item.origin_price | currency}}</td>
                     <td class="text-right">{{item.price | currency}}</td>
                     <td>
