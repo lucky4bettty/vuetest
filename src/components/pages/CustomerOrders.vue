@@ -221,10 +221,10 @@ export default {
         
         if(this.cartGoods.length == 0){
           console.log('我無資料')
-          // $('.cartAll').css('display','none')
+          $('.cartAll').css('display','none')
+        }else{
+          $('.cartAll').css('display','block')
         }
-        
-        
         // var originPrice = 0;
         // this.cartGoods.forEach(item =>{
         //   originPrice = originPrice + item.product.num * item.product.price
@@ -235,14 +235,17 @@ export default {
       })
     },
     addOrder(){
-      console.log('加訂單了喔')
+      // console.log('加訂單了喔')
       this.$validator.validate().then((result)=>{
         if(result){
           // console.log('我送出去啦')
         const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`
         var order = this.form
         this.$http.post(api,{data:order}).then(response => {
-          console.log(response)
+          console.log('成功加入訂單')
+          if(response.data.success){
+            this.$router.push(`/customer_checkout/${response.data.orderId}`)
+          }
           // this.getCart()
         })
         }else{
@@ -291,7 +294,7 @@ export default {
       console.log(cart)
       console.log(api)
       this.$http.post(api,{data:cart}).then(response => {
-        console.log(response)
+        console.log(response.data)
         this.getCart()
         $('#productModal').modal('hide')
       })

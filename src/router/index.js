@@ -7,6 +7,7 @@ import Products from '@/components/pages/Products'
 import OrderForm from '@/components/pages/OrderForm'
 import Coupon from '@/components/pages/Coupon'
 import Customer from '@/components/pages/CustomerOrders'
+import CustomerCheckout from '@/components/pages/CustomerCheckout'
 
 
 
@@ -71,7 +72,13 @@ export default new Router({
         path:'customer',
         name: Customer,
         component: Customer
-      }
+      },
+      { 
+        path:'customer_checkout/:orderId',
+        name: CustomerCheckout,
+        component: CustomerCheckout
+      },
+
       ]
     },
   ]
