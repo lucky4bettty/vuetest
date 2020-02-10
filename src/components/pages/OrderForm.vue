@@ -286,7 +286,7 @@ export default {
             return pay
         },
         productItem:function(e){
-            console.log(e)
+            // console.log(e)
             var productName =Object.keys(e)
             // console.log(productName)
             // console.log(productName.length)
@@ -300,7 +300,7 @@ export default {
                 var word = name + '*' + qty +"<br/>"
                 final = final + word
             }
-            console.log(final)
+            // console.log(final)
             return final
         }
     },

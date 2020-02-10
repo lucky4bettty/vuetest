@@ -14,6 +14,7 @@ import CustomerCheckout from '@/components/pages/CustomerCheckout'
 Vue.use(Router)
 
 export default new Router({
+  linkActiveClass:'active',
   routes: [
     {
       path:'*',
@@ -35,7 +36,6 @@ export default new Router({
       path: '/admin',
       name: 'HelloWorld',
       component:  Dashboard,
-      
       children:[
         {
           path:'product',
